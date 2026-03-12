@@ -1,0 +1,198 @@
+/* 配置窗口样式 */
+
+.config-window {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    display: none;
+    z-index: 1000;
+    animation: windowFadeIn 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.config-window .window-wrapper {
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(135deg, rgba(0, 0, 0, 0.95) 0%, rgba(139, 0, 0, 0.2) 100%);
+    backdrop-filter: blur(16px) saturate(120%);
+    -webkit-backdrop-filter: blur(16px) saturate(120%);
+    border-radius: var(--radius-none);
+    border: 3px solid rgba(139, 0, 0, 0.3);
+    box-shadow: var(--shadow-xl), 0 0 20px rgba(220, 20, 60, 0.4);
+    overflow: hidden;
+    position: relative;
+}
+
+.config-window .window-wrapper::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0) 100%);
+    pointer-events: none;
+}
+
+/* 配置容器 */
+.config-container {
+    padding: 32px;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+}
+
+/* 配置表单 */
+.config-form {
+    background: rgba(0, 0, 0, 0.3);
+    border-radius: 16px;
+    padding: 32px;
+    border: 2px solid rgba(220, 20, 60, 0.3);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    box-shadow: inset 0 2px 8px rgba(0, 0, 0, 0.5);
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+}
+
+/* 表单组 */
+.form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.form-group label {
+    color: #ffffff;
+    font-size: 14px;
+    font-weight: 600;
+    margin-bottom: 4px;
+    text-shadow: 0 0 8px rgba(220, 20, 60, 0.5);
+}
+
+.form-input,
+.form-select {
+    padding: 12px 16px;
+    background: rgba(255, 255, 255, 0.1);
+    border: 2px solid rgba(220, 20, 60, 0.3);
+    border-radius: 8px;
+    color: #ffffff;
+    font-size: 14px;
+    transition: var(--transition);
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
+}
+
+.form-input:focus {
+    outline: none;
+    border-color: rgba(255, 69, 0, 0.6);
+    box-shadow: 0 0 0 3px rgba(255, 69, 0, 0.2);
+    background: rgba(255, 255, 255, 0.15);
+}
+
+.form-input::placeholder {
+    color: rgba(255, 255, 255, 0.5);
+}
+
+/* 必填字段标识 */
+.form-group label::after {
+    content: '';
+    display: inline-block;
+    margin-left: 4px;
+    color: rgba(255, 69, 0, 0.8);
+}
+
+.form-group label[for*="api-key"]::after {
+    content: ' *';
+}
+
+/* 表单操作区 */
+.form-actions {
+    display: flex;
+    gap: 12px;
+    justify-content: flex-end;
+    margin-top: auto;
+    padding-top: 16px;
+    border-top: 1px solid rgba(220, 20, 60, 0.3);
+}
+
+/* 按钮样式继承公共样式 */
+.btn-primary,
+.btn-secondary {
+    padding: 12px 24px;
+    border: none;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: var(--transition);
+    position: relative;
+    overflow: hidden;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.btn-primary {
+    background: linear-gradient(135deg, rgba(220, 20, 60, 0.8) 0%, rgba(255, 69, 0, 0.6) 100%);
+    color: #ffffff;
+    border: 2px solid rgba(255, 69, 0, 0.5);
+    box-shadow: 0 4px 12px rgba(220, 20, 60, 0.3);
+}
+
+.btn-primary:hover {
+    background: linear-gradient(135deg, rgba(255, 69, 0, 0.9) 0%, rgba(220, 20, 60, 0.8) 100%);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(255, 69, 0, 0.4);
+    border-color: rgba(255, 69, 0, 0.8);
+}
+
+.btn-secondary {
+    background: rgba(255, 255, 255, 0.1);
+    color: #ffffff;
+    border: 2px solid rgba(220, 20, 60, 0.4);
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
+}
+
+.btn-secondary:hover {
+    background: rgba(255, 255, 255, 0.2);
+    border-color: rgba(255, 69, 0, 0.6);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(220, 20, 60, 0.2);
+}
+
+/* 窗口动画 */
+@keyframes windowFadeIn {
+    from {
+        opacity: 0;
+        transform: scale(0.95);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+/* 响应式设计 */
+@media (max-width: 600px) {
+    .config-container {
+        padding: 16px;
+    }
+
+    .config-form {
+        padding: 20px;
+    }
+
+    .form-actions {
+        flex-direction: column;
+    }
+
+    .btn-primary,
+    .btn-secondary {
+        width: 100%;
+    }
+}

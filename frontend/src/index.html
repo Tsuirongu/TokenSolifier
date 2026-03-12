@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>loji App</title>
+    <!-- 加载图标库 -->
+    <link rel="stylesheet" href="./icons.svg">
+
+    <!-- 加载所有模块样式 -->
+    <link rel="stylesheet" href="./modules/common/common.css">
+    <link rel="stylesheet" href="./modules/main/main.css">
+    <link rel="stylesheet" href="./modules/config/config.css">
+    <link rel="stylesheet" href="./modules/toolbox/toolbox.css">
+    <link rel="stylesheet" href="./modules/clipboard/clipboard.css">
+    <link rel="stylesheet" href="./modules/preview/preview.css">
+    <link rel="stylesheet" href="./modules/edit/edit.css">
+</head>
+<body style="--wails-draggable:drag" w>
+    <!-- 长条形悬浮入口 -->
+    <div class="floating-bar" id="floating-bar" data-wails-drag>
+        <!-- 左侧主按钮 -->
+        <div class="main-button" id="main-button" data-wails-no-drag>
+            <div class="main-icon">◉</div>
+        </div>
+
+        <!-- 右侧工具栏 -->
+        <div class="toolbar" data-wails-no-drag>
+            <button class="tool-btn" id="quick-ai-chat-btn" title="AI对话">
+                <span class="tool-icon">→</span>
+            </button>
+            <button class="tool-btn" id="quick-config-btn" title="全局配置">
+                <span class="tool-icon">⚙</span>
+            </button>
+            <button class="tool-btn" id="quick-clipboard-btn" title="智能剪贴板">
+                <span class="tool-icon">☰</span>
+            </button>
+        </div>
+    </div>
+
+    <!-- 悬浮窗口框架 -->
+    <div class="floating-window" id="floating-window" style="display: none;">
+        <div class="window-wrapper">
+            <!-- 窗口头部（可拖拽） -->
+            <div class="window-header" data-wails-drag>
+                <div class="window-title">
+                    <span class="title-icon">⚡</span>
+                    <span class="title-text">loji 工具箱</span>
+                </div>
+                <div class="window-controls" data-wails-no-drag>
+                    <button class="control-btn minimize" id="minimize-btn" title="最小化">─</button>
+                    <button class="control-btn close" id="close-window-btn" title="关闭">✕</button>
+                </div>
+            </div>
+
+            <!-- 窗口内容 - 由模块填充 -->
+            <div class="window-content" data-wails-no-drag>
+                <!-- 工具箱模块内容将在这里动态加载 -->
+            </div>
+        </div>
+    </div>
+
+    <!-- 剪贴板窗口 -->
+    <div class="clipboard-window" id="clipboard-window" style="display: none;">
+        <div class="window-wrapper">
+            <!-- 窗口头部 -->
+            <div class="window-header" data-wails-drag>
+                <div class="window-title">
+                    <span class="title-icon">☰</span>
+                    <span class="title-text">智能剪贴板</span>
+                </div>
+                <div class="window-controls" data-wails-no-drag>
+                    <button class="control-btn minimize" id="clipboard-minimize-btn" title="最小化">─</button>
+                    <button class="control-btn close" id="close-clipboard-btn" title="关闭">✕</button>
+                </div>
+            </div>
+
+            <!-- 窗口内容 - 由剪贴板模块填充 -->
+            <div class="window-content">
+                <!-- 剪贴板模块内容将在这里动态加载 -->
+            </div>
+        </div>
+    </div>
+
+
+    <!-- 预览窗口 -->
+    <div class="preview-window" id="preview-window" style="display: none;">
+        <div class="preview-wrapper" data-wails-no-drag>
+            <!-- 预览头部 -->
+            <div class="preview-header">
+                <div class="preview-title">
+                    <span class="preview-icon" id="preview-icon">◉</span>
+                    <span class="preview-title-text" id="preview-title-text">预览</span>
+                </div>
+                <button class="control-btn close" id="close-preview-btn" title="关闭">✕</button>
+            </div>
+
+            <!-- 预览内容 -->
+            <div class="preview-content" id="preview-content">
+                <div class="preview-loading" id="preview-loading">
+                    <div class="loading-spinner-large"></div>
+                    <p>加载中...</p>
+                </div>
+                <div class="preview-body" id="preview-body"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- AI对话框 -->
+    <div class="ai-chat-modal" id="ai-chat-modal" style="display: none;">
+        <div class="chat-window">
+            <!-- 左侧头像区域 -->
+            <div class="chat-sidebar">
+                <div class="avatar-container">
+                    <div class="large-avatar-rect">
+                        <img src="/appicon.png" alt="LOJI" class="large-avatar-image">
+                    </div>
+                    <div class="avatar-label">LOJI</div>
+                    <div class="avatar-info-box">
+                        <div class="info-text">智能AI助手</div>
+                        <div class="info-text">随时为您服务</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 右侧对话区域 -->
+            <div class="chat-main">
+                <div class="chat-header" data-wails-drag>
+                    <div class="chat-title">AI助手</div>
+                    <div class="chat-header-actions">
+                        <button class="new-session-btn" id="new-session-btn" title="新会话" data-wails-no-drag>+</button>
+                        <button class="chat-close-btn" id="ai-chat-close-btn" title="关闭" data-wails-no-drag>✕</button>
+                    </div>
+                </div>
+                <div class="chat-body" data-wails-no-drag>
+                    <div class="chat-messages" id="chat-messages">
+                        <div class="message-wrapper ai-message-wrapper">
+                            <div class="message-content">
+                                <div class="message-bubble">
+                                    <div class="message-text">你好！欢迎来到个人终端插件工厂，你有想要的工具，可以工具箱里创建，如果对方案有不确定的，可以问我。你可以叫我LOJI</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="chat-input-container">
+                        <textarea
+                            id="chat-input"
+                            class="chat-input"
+                            placeholder="输入你的问题，按Enter发送..."
+                            rows="2"
+                        ></textarea>
+                        <button class="chat-send-btn" id="chat-send-btn" title="发送">
+                            <span class="send-icon">→</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 确认对话框 -->
+    <div class="clipboard-edit-modal" id="confirm-modal" style="display: none;">
+        <div class="modal-content confirm-dialog" data-wails-no-drag>
+            <div class="modal-header">
+                <h3>！确认操作</h3>
+            </div>
+            <div class="modal-body">
+                <p id="confirm-message" class="confirm-message">确定要执行此操作吗？</p>
+            </div>
+            <div class="modal-footer">
+                <button class="btn-secondary" id="confirm-cancel-btn">取消</button>
+                <button class="btn-danger" id="confirm-ok-btn">确定</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 通知提示 -->
+    <div class="toast" id="toast"></div>
+
+    <!-- 进度条组件 -->
+    <div class="progress-overlay" id="progress-overlay" style="display: none;">
+        <div class="progress-modal" data-wails-no-drag>
+            <div class="progress-header">
+                <div class="progress-icon">⚡</div>
+                <h3 class="progress-title">正在生成插件</h3>
+            </div>
+            <div class="progress-content">
+                <div class="progress-bar-container">
+                    <div class="progress-bar" id="progress-bar">
+                        <div class="progress-fill" id="progress-fill"></div>
+                    </div>
+                    <div class="progress-percentage" id="progress-percentage">0%</div>
+                </div>
+                <div class="progress-stage" id="progress-stage">准备中...</div>
+                <div class="progress-message" id="progress-message">正在初始化...</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 脚本引用 -->
+    <script type="module" src="./modules/main/main.js"></script>
+</body>
+</html>
+

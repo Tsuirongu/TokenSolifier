@@ -1,0 +1,35 @@
+<!-- 确认对话框 -->
+<div class="clipboard-edit-modal" id="confirm-modal" style="display: none;">
+    <div class="modal-content confirm-dialog" data-wails-no-drag>
+        <div class="modal-header">
+            <h3>⚠️ 确认操作</h3>
+        </div>
+        <div class="modal-body">
+            <p id="confirm-message" class="confirm-message">确定要执行此操作吗？</p>
+        </div>
+        <div class="modal-footer">
+            <button class="btn-secondary" id="confirm-cancel-btn">取消</button>
+            <button class="btn-danger" id="confirm-ok-btn">确定</button>
+        </div>
+    </div>
+</div>
+
+<!-- 进度条组件 -->
+<div class="progress-overlay" id="progress-overlay" style="display: none;">
+    <div class="progress-modal" data-wails-no-drag>
+        <div class="progress-header">
+            <div class="progress-icon">⚡</div>
+            <h3 class="progress-title">正在生成插件</h3>
+        </div>
+        <div class="progress-content">
+            <div class="progress-bar-container">
+                <div class="progress-bar" id="progress-bar">
+                    <div class="progress-fill" id="progress-fill"></div>
+                </div>
+                <div class="progress-percentage" id="progress-percentage">0%</div>
+            </div>
+            <div class="progress-stage" id="progress-stage">准备中...</div>
+            <div class="progress-message" id="progress-message">正在初始化...</div>
+        </div>
+    </div>
+</div>

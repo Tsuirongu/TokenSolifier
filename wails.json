@@ -1,0 +1,19 @@
+{
+  "$schema": "https://wails.io/schemas/config.v3.json",
+  "name": "loji-app",
+  "outputfilename": "loji-app",
+  "frontend:install": "npm install",
+  "frontend:build": "npm run build",
+  "frontend:dev:watcher": "npm run dev",
+  "frontend:dev:serverUrl": "auto",
+  "author": {
+    "name": "Tsuirongu"
+  },
+  "info": {
+    "companyName": "loji App",
+    "productName": "loji App",
+    "productVersion": "1.0.0",
+    "copyright": "Copyright © 2025",
+    "comments": "AI-powered tool generator"
+  }
+}

@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>loji App</title>
+    <link rel="stylesheet" href="../common/common.css">
+    <link rel="stylesheet" href="../main/main.css">
+    <link rel="stylesheet" href="../config/config.css">
+</head>
+<body style="--wails-draggable:drag">
+    <!-- 长条形悬浮入口 -->
+    <div class="floating-bar" id="floating-bar" data-wails-drag>
+        <!-- 左侧主按钮 -->
+        <div class="main-button" id="main-button" data-wails-no-drag>
+            <div class="main-icon">✨</div>
+        </div>
+
+        <!-- 右侧工具栏 -->
+        <div class="toolbar" data-wails-no-drag>
+            <button class="tool-btn" id="quick-add-btn" title="新建工具">
+                <span class="tool-icon">➕</span>
+            </button>
+            <button class="tool-btn" id="quick-config-btn" title="全局配置">
+                <span class="tool-icon">⚙</span>
+            </button>
+            <button class="tool-btn" id="quick-clipboard-btn" title="智能剪贴板">
+                <span class="tool-icon">📋</span>
+            </button>
+        </div>
+    </div>
+
+    <!-- 悬浮窗口框架 -->
+    <div class="floating-window" id="floating-window" style="display: none;">
+        <div class="window-wrapper">
+            <!-- 窗口头部（可拖拽） -->
+            <div class="window-header" data-wails-drag>
+                <div class="window-title">
+                    <span class="title-icon">✨</span>
+                    <span class="title-text">loji 工具箱</span>
+                </div>
+                <div class="window-controls" data-wails-no-drag>
+                    <button class="control-btn minimize" id="minimize-btn" title="最小化">─</button>
+                    <button class="control-btn close" id="close-window-btn" title="关闭">✕</button>
+                </div>
+            </div>
+
+            <!-- 窗口内容 - 由模块填充 -->
+            <div class="window-content" data-wails-no-drag>
+                <!-- 工具箱模块内容将在这里动态加载 -->
+            </div>
+        </div>
+    </div>
+
+    <!-- 剪贴板窗口 -->
+    <div class="clipboard-window" id="clipboard-window" style="display: none;">
+        <div class="window-wrapper">
+            <!-- 窗口头部 -->
+            <div class="window-header" data-wails-drag>
+                <div class="window-title">
+                    <span class="title-icon">📋</span>
+                    <span class="title-text">智能剪贴板</span>
+                </div>
+                <div class="window-controls" data-wails-no-drag>
+                    <button class="control-btn minimize" id="clipboard-minimize-btn" title="最小化">─</button>
+                    <button class="control-btn close" id="close-clipboard-btn" title="关闭">✕</button>
+                </div>
+            </div>
+
+            <!-- 窗口内容 - 由剪贴板模块填充 -->
+            <div class="window-content">
+                <!-- 剪贴板模块内容将在这里动态加载 -->
+            </div>
+        </div>
+    </div>
+
+    <!-- 通知提示 -->
+    <div class="toast" id="toast"></div>
+
+    <!-- 脚本引用 -->
+    <script type="module" src="../main/main.js"></script>
+</body>
+</html>

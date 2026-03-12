@@ -1,0 +1,98 @@
+请根据以下需求和输入输出规范生成Go WebAssembly插件代码：
+
+需求：{{REQUIREMENT}}
+
+输入输出规范：
+{{INPUT_OUTPUT_SPEC}}
+
+要求：
+1. 必须是完整的Go代码，包含package main
+2. 必须导入 syscall/js 包
+3. execute 函数必须是 func(this js.Value, args []js.Value) interface{} 类型
+4. 在 main() 函数中使用 js.Global().Set("execute", js.FuncOf(execute)) 注册函数
+5. main() 函数必须使用 channel 阻塞，防止程序退出
+6. execute 函数接收JSON字符串作为输入，返回JSON字符串作为输出
+7. 代码要简洁、高效、易于理解
+8. 包含适当的错误处理
+9. 使用标准库，避免外部依赖
+10. 输入输出都使用JSON格式，严格按照提供的输入输出规范定义结构体
+11. 只返回代码，不要有其他解释
+
+文件处理功能：
+- 读取文件：使用 lojifile/lojifile 包中的函数
+  * ReadFile(fileData string) ([]byte, error) - 读取文件内容
+  * ReadFileAsString(fileData string) (string, error) - 读取文本文件
+  * GetFileExtension(fileData string) string - 获取文件扩展名
+  * GetFileSize(fileData string) (int, error) - 获取文件大小
+  
+- 输出文件：使用 lojifile/lojifile 包中的函数
+  * WriteOutputFile(data []byte, fileName string) (string, error) - 写入文件并返回路径
+  * WriteOutputFileFromBase64(base64Data string, fileName string) (string, error) - 从Base64写入文件
+  
+- 使用示例：
+  ```go
+  import "lojifile/lojifile"
+  
+  // 读取输入文件
+  content, err := file.ReadFile(input.FileList[0])
+  
+  // 输出图片
+  filePath, _ := file.WriteOutputFile(imageData, "output.png")
+  output.ImageList = append(output.ImageList, filePath)
+  ```
+
+代码结构参考：
+```go
+package main
+
+import (
+	"encoding/json"
+	"fmt"
+	"syscall/js"
+)
+
+type Input struct {
+	TextList     []string `json:"textList"`
+	ImageList    []string `json:"imageList"`
+	FileList     []string `json:"fileList"`
+	AudioList    []string `json:"audioList"`
+	VideoList    []string `json:"videoList"`
+	DocumentList []string `json:"documentList"`
+	OtherList    []string `json:"otherList"`
+}
+
+type Output struct {
+	// 根据输出规范定义字段
+	// 例如：Result string `json:"result"`
+}
+
+func execute(this js.Value, args []js.Value) interface{} {
+	if len(args) != 1 {
+		return map[string]interface{}{"error": "需要1个参数"}
+	}
+
+	input := args[0].String()
+	var data Input
+	if err := json.Unmarshal([]byte(input), &data); err != nil {
+		return fmt.Sprintf("{\"error\": \"%s\"}", err.Error())
+	}
+
+	// 根据需求实现具体的业务逻辑
+	// 可以使用 data.TextList, data.ImageList 等字段
+
+	result := Output{
+		// 根据需求填充结果
+	}
+
+	jsonResult, _ := json.Marshal(result)
+	return string(jsonResult)
+}
+
+func main() {
+	c := make(chan struct{})
+	js.Global().Set("execute", js.FuncOf(execute))
+	<-c
+}
+```
+
+请根据需求和输入输出规范生成相应的Go代码。

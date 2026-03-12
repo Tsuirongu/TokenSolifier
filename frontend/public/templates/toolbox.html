@@ -1,0 +1,149 @@
+<!-- 工具箱模块内容 -->
+<div class="toolbox-container">
+    <!-- 左侧：TAB 列表（工具列表 + 快捷操作） -->
+    <aside class="toolbox-sidebar">
+        <div class="quick-actions">
+            <button class="action-card" id="add-tool-btn">
+                <div class="action-icon">+</div>
+                <div class="action-label">新建工具</div>
+            </button>
+            <button class="action-card" id="refresh-btn">
+                <div class="action-icon">⟳</div>
+                <div class="action-label">刷新列表</div>
+            </button>
+        </div>
+        <div class="tools-container sidebar">
+            <div class="tools-header">
+                <h3>我的工具</h3>
+                <span class="tools-count" id="tools-count">0</span>
+            </div>
+            <div class="tools-list tabs" id="tools-list">
+                <div class="empty-state">
+                    <div class="empty-icon">□</div>
+                    <p>还没有工具</p>
+                    <p class="empty-hint">点击上方按钮创建第一个工具</p>
+                </div>
+            </div>
+        </div>
+    </aside>
+
+    <!-- 右侧：工具详情（描述/输入/输出） -->
+    <section class="toolbox-detail" id="toolbox-detail">
+        <!-- 工具创建面板（覆盖详情顶部显示） -->
+        <div class="tool-creator" id="tool-creator" style="display: none;">
+            <div class="creator-header">
+                <h3>⚡ 描述您需要的工具</h3>
+                <button class="close-panel-btn" id="close-creator-btn">×</button>
+            </div>
+            <textarea
+                id="requirement-input"
+                class="creator-input"
+                placeholder="例如：BMI计算器、单位转换器、密码生成器..."
+                rows="3"
+            ></textarea>
+
+            <!-- 标签选择区域 -->
+            <div class="tag-selector">
+                <label class="tag-selector-label">选择标签（可多选）：</label>
+                <div class="tag-options" id="tag-options">
+                    <!-- 动态生成的标签选项将在这里显示 -->
+                </div>
+            </div>
+
+            <div class="creator-actions">
+                <button class="btn-secondary" id="cancel-creator-btn">取消</button>
+                <button class="btn-primary" id="generate-btn">
+                    <span class="loading-spinner" style="display: none;"></span>
+                    <span class="btn-text">⚡ 生成工具</span>
+                </button>
+            </div>
+        </div>
+
+        <!-- 详情主体 -->
+        <div class="detail-header">
+            <h3 class="detail-title" id="detail-title">请选择左侧工具</h3>
+            <div class="detail-actions">
+                <button class="tool-action-btn code" id="detail-code-btn" title="查看Go代码" style="display: none;">{ }</button>
+                <button class="tool-action-btn delete" id="detail-delete-btn" title="删除当前工具" style="display: none;">⌫</button>
+            </div>
+        </div>
+        <div class="detail-description" id="detail-description">在这里将展示工具描述。</div>
+
+        <!-- 插件输入输出描述展示区域 -->
+        <div class="plugin-io-desc" id="plugin-io-desc" style="display: none;">
+            <div class="io-section">
+                <div class="io-header">
+                    <span class="io-icon">↓</span>
+                    <h4 class="io-title">输入参数说明</h4>
+                </div>
+                <div class="io-content">
+                    <div class="io-field-list" id="input-fields-list">
+                        <!-- 动态填充输入字段描述 -->
+                    </div>
+                </div>
+            </div>
+            <div class="io-section">
+                <div class="io-header">
+                    <span class="io-icon">↑</span>
+                    <h4 class="io-title">输出结果说明</h4>
+                </div>
+                <div class="io-content">
+                    <div class="io-field-list" id="output-fields-list">
+                        <!-- 动态填充输出字段描述 -->
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="detail-body">
+            <!-- 动态输入表单容器 -->
+            <div class="input-form-container" id="input-form-container" style="display: none;">
+                <div class="form-header">
+                    <label class="form-title">输入参数</label>
+                    <button class="form-toggle-btn" id="form-toggle-btn" title="切换到JSON编辑模式">{ } JSON</button>
+                </div>
+                <div class="input-form" id="input-form">
+                    <!-- 动态生成的表单字段将在这里显示 -->
+                </div>
+            </div>
+
+            <!-- JSON编辑模式容器 -->
+            <div class="json-input-container" id="json-input-container">
+                <label>输入参数 (JSON格式)</label>
+                <textarea
+                    class="executor-input"
+                    id="detail-input"
+                    placeholder='{"key": "value"}'
+                    rows="8"
+                ></textarea>
+            </div>
+            <button class="btn-primary full-width" id="detail-execute-btn">
+                <span class="loading-spinner" style="display: none;"></span>
+                <span class="btn-text">▶ 执行</span>
+            </button>
+            <div class="output-group">
+                <label>执行结果</label>
+                <div class="executor-output" id="detail-output">等待执行...</div>
+            </div>
+        </div>
+    </section>
+</div>
+
+<!-- 代码预览模态框 -->
+<div class="code-preview-modal" id="code-modal" style="display: none;">
+    <div class="modal-content code-dialog" data-wails-no-drag>
+        <div class="modal-header">
+            <h3>{ } Go代码预览</h3>
+            <button class="modal-close-btn" id="code-modal-close-btn">×</button>
+        </div>
+        <div class="modal-body">
+            <div class="code-container">
+                <pre class="code-content" id="code-content"></pre>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button class="btn-secondary" id="code-copy-btn">□ 复制Go代码</button>
+            <button class="btn-primary" id="code-close-btn">关闭</button>
+        </div>
+    </div>
+</div>

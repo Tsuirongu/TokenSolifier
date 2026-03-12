@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Debug Transparency</title>
+    <style>
+        html {
+            background: red !important;
+        }
+        body {
+            margin: 0;
+            padding: 0;
+            background: transparent !important;
+            width: 100vw;
+            height: 100vh;
+        }
+        .test-circle {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 100px;
+            height: 100px;
+            background: linear-gradient(135deg, #667eea 0%, #4fd1c5 100%);
+            border-radius: 9999px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 32px;
+        }
+    </style>
+</head>
+<body>
+    <div class="test-circle">✨</div>
+    <script>
+        console.log('HTML background:', window.getComputedStyle(document.documentElement).background);
+        console.log('Body background:', window.getComputedStyle(document.body).background);
+        console.log('Body backgroundColor:', window.getComputedStyle(document.body).backgroundColor);
+    </script>
+</body>
+</html>
+
